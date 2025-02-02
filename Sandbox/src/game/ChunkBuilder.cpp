@@ -45,8 +45,8 @@ void ChunkBuilder::BuildChunk(const std::shared_ptr<Chunk>& chunk)
     const float persistence = 0.4f;       // Lower persistence to make terrain smoother
     const int maxTerrainHeight = 256.0f;     // Max height for the terrain (mountain peaks)
 
-    int cx = (pos.x * CHUNK_WIDTH);
-    int cz = (pos.y * CHUNK_DEPTH);
+    int cx = (pos.x * CHUNK_SIZE);
+    int cz = (pos.y * CHUNK_SIZE);
 
     // Function to generate multi-octave Perlin noise
     auto generateNoise = [octaves, persistence, baseFrequency](float x, float z) -> float {
@@ -63,8 +63,8 @@ void ChunkBuilder::BuildChunk(const std::shared_ptr<Chunk>& chunk)
         return noiseValue;
     };
 
-    for (int x = 0; x < CHUNK_WIDTH; x++) {
-        for (int z = 0; z < CHUNK_DEPTH; z++) {
+    for (int x = 0; x < CHUNK_SIZE; x++) {
+        for (int z = 0; z < CHUNK_SIZE; z++) {
 
             int worldX = cx + x;
             int worldZ = cz + z;
@@ -81,9 +81,9 @@ void ChunkBuilder::BuildChunk(const std::shared_ptr<Chunk>& chunk)
             {
                 ChunkSegment* section = chunk->GetChunkSegment(sectionIndex);
 
-                for (int y = 0; y < CHUNK_HEIGHT; y++) 
+                for (int y = 0; y < CHUNK_SIZE; y++) 
                 {
-                    int worldY = (sectionIndex * CHUNK_HEIGHT) + y;
+                    int worldY = (sectionIndex * CHUNK_SIZE) + y;
                     
                     // air is default if not mapped so no need to map it
 
@@ -158,15 +158,15 @@ void ChunkBuilder::RebuildMesh(const std::shared_ptr<Chunk>& chunk)
                         continue;
                     }
 
-                    float worldX = (pos.x * CHUNK_HEIGHT) + x;
-                    float worldY = (i * CHUNK_HEIGHT) + y;
-                    float worldZ = (pos.y * CHUNK_HEIGHT) + z;
+                    float worldX = (pos.x * CHUNK_SIZE) + x;
+                    float worldY = (i * CHUNK_SIZE) + y;
+                    float worldZ = (pos.y * CHUNK_SIZE) + z;
 
                     bool isFrontEdge = z == 0;
-                    bool isBackEdge = z == CHUNK_DEPTH - 1;
+                    bool isBackEdge = z == CHUNK_SIZE - 1;
 
                     bool isLeftEdge = x == 0;
-                    bool isRightEdge = x == CHUNK_WIDTH - 1;
+                    bool isRightEdge = x == CHUNK_SIZE - 1;
 
                     bool showTopFace = segment->GetBlockType(x, y + 1, z) == BlockTypeEnum::Air;
                     bool showBottomFace = segment->GetBlockType(x, y - 1, z) == BlockTypeEnum::Air;

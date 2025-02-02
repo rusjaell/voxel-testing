@@ -43,23 +43,23 @@ private:
 public:
 	static glm::ivec2 ChunkToWorld(int x, int z)
 	{
-		int worldX = x * CHUNK_WIDTH;
-		int worldZ = z * CHUNK_DEPTH;
+		int worldX = x * CHUNK_SIZE;
+		int worldZ = z * CHUNK_SIZE;
 		return { worldX, worldZ };
 	}
 	
 	static glm::ivec2 WorldToChunk(int x, int z) 
 	{
-		int chunkX = (x < 0) ? (x - (CHUNK_WIDTH - 1)) / CHUNK_WIDTH : x / CHUNK_WIDTH;
-		int chunkZ = (z < 0) ? (z - (CHUNK_DEPTH - 1)) / CHUNK_DEPTH : z / CHUNK_DEPTH;
+		int chunkX = (x < 0) ? (x - (CHUNK_SIZE - 1)) / CHUNK_SIZE : x / CHUNK_SIZE;
+		int chunkZ = (z < 0) ? (z - (CHUNK_SIZE - 1)) / CHUNK_SIZE : z / CHUNK_SIZE;
 		return { chunkX, chunkZ };
 	}
 
 	static glm::ivec3 WorldToLocal(int x, int y, int z)
 	{
-		int localX = (x < 0) ? (x % CHUNK_WIDTH + CHUNK_WIDTH) % CHUNK_WIDTH : x % CHUNK_WIDTH;
-		int localY = y % CHUNK_HEIGHT;
-		int localZ = (z < 0) ? (z % CHUNK_DEPTH + CHUNK_DEPTH) % CHUNK_DEPTH : z % CHUNK_DEPTH;
+		int localX = (x < 0) ? (x % CHUNK_SIZE + CHUNK_SIZE) % CHUNK_SIZE : x % CHUNK_SIZE;
+		int localY = y % CHUNK_SIZE;
+		int localZ = (z < 0) ? (z % CHUNK_SIZE + CHUNK_SIZE) % CHUNK_SIZE : z % CHUNK_SIZE;
 		return { localX, localY, localZ };
 	}
 };

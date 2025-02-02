@@ -126,7 +126,8 @@ int main()
                 renderAccumulator = 0.0;
                 frames++;
 
-                GL_CALL(glClearColor(0.392f, 0.584f, 0.929f, 1.0f));
+                GL_CALL(glClearColor(0.0902f, 0.0078f, 0.4f, 1.0f));
+                //GL_CALL(glClearColor(0.392f, 0.584f, 0.929f, 1.0f));
                 GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
                 world->Render(alpha);

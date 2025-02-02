@@ -97,7 +97,10 @@ void World::Render(double dt)
     _shader->SetUniform1i("u_Texture", 0);
     _shader->SetUniformMatrix4f("u_View", _camera->viewMatrix());
     _shader->SetUniformMatrix4f("u_Projection", _camera->projectionMatrix());
-    _shader->SetUniform3f("u_LightDirection", { -1.0f, -1.0f, 0.25f});
+    _shader->SetUniform3f("u_LightDirection", { -0.25f, -1.0f, 0.1f });
+
+    _shader->SetUniform1f("u_AmbientStrength", 0.3f);
+    _shader->SetUniform3f("u_AmbientColor", { 0.0902f, 0.0078f, 0.4f });
 
     _texture->Bind();
 
@@ -116,7 +119,7 @@ void World::Render(double dt)
         }
 
         const glm::ivec2 pos = chunk->pos();
-        glm::vec3 chunkPos = { pos.x * CHUNK_WIDTH, 0.0f, pos.y * CHUNK_DEPTH };
+        glm::vec3 chunkPos = { pos.x * CHUNK_SIZE, 0.0f, pos.y * CHUNK_SIZE };
 
         glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), chunkPos);
 

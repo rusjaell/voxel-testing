@@ -17,7 +17,8 @@ private:
     int GetOrAddPalette(BlockTypeEnum blockType);
 
     std::vector<BlockTypeEnum> _palette = { BlockTypeEnum::Air };
-    std::array<unsigned char, CHUNK_SIZE> _blocks = { 0 };
+    std::array<unsigned char, CHUNK_SIZE_3> _blocks = { 0 };
+
     bool _isFullyAir = true;
 };
 

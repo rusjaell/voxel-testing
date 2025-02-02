@@ -21,10 +21,13 @@
 #include <fstream>
 #include <sstream>
 
-constexpr int CHUNK_WIDTH = 16;
-constexpr int CHUNK_HEIGHT = 16;
-constexpr int CHUNK_DEPTH = 16;
-constexpr int CHUNK_SIZE = CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH;
+constexpr int CHUNK_SIZE = 16;
+constexpr int CHUNK_SIZE_2 = CHUNK_SIZE * CHUNK_SIZE;
+constexpr int CHUNK_SIZE_3 = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
+
+constexpr int CHUNK_SIZE_PADDED = CHUNK_SIZE + 2;
+constexpr int CHUNK_SIZE_PADDED_2 = CHUNK_SIZE_PADDED * CHUNK_SIZE_PADDED;
+constexpr int CHUNK_SIZE_PADDED_3 = CHUNK_SIZE_PADDED * CHUNK_SIZE_PADDED * CHUNK_SIZE_PADDED;
 
 // STBI
 #include <stb/stb_image.h>

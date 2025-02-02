@@ -5,6 +5,7 @@ void ChunkSegment::SetBlockType(int x, int y, int z, BlockTypeEnum blockType) {
     int blockIndex = GetBlockIndex(x, y, z);
     int paletteIndex = GetOrAddPalette(blockType);
     _blocks[blockIndex] = paletteIndex;
+
     if (blockType != BlockTypeEnum::Air) {
         _isFullyAir = false;
     }
@@ -24,10 +25,10 @@ bool ChunkSegment::IsFullyAir() const {
 }
 
 int ChunkSegment::GetBlockIndex(int x, int y, int z) {
-    if (x < 0 || x >= CHUNK_WIDTH || y < 0 || y >= CHUNK_HEIGHT || z < 0 || z >= CHUNK_DEPTH) {
+    if (x < 0 || x >= CHUNK_SIZE || y < 0 || y >= CHUNK_SIZE || z < 0 || z >= CHUNK_SIZE) {
         return -1;
     }
-    return x + y * CHUNK_WIDTH + z * CHUNK_WIDTH * CHUNK_HEIGHT;
+    return x + (y * CHUNK_SIZE) + (z * CHUNK_SIZE_2);
 }
 
 int ChunkSegment::GetOrAddPalette(BlockTypeEnum blockType)
