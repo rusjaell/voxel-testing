@@ -1,8 +1,6 @@
 #ifndef INDEX_BUFFER
 #define INDEX_BUFFER
 
-#include "OpenGL.h"
-
 class IndexBuffer
 {
 public:

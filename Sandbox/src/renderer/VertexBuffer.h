@@ -1,9 +1,6 @@
 #ifndef VERTEX_BUFFER_H
 #define VERTEX_BUFFER_H
 
-#include "OpenGL.h"
-#include <vector>
-
 struct VertexBufferElement
 {
     GLint size;

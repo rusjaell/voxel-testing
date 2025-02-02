@@ -1,10 +1,5 @@
+#include "pch.h"
 #include "Texture.h"
-
-#include <iostream>
-#include <cassert>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
 
 Texture::Texture(const std::string& filePath)
 	: id_(0), width_(0), height_(0), channels_(0)

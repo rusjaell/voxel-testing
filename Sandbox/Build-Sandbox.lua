@@ -25,6 +25,12 @@ project "Sandbox"
 
    targetdir ("../Build/" .. OutputDir .. "/%{prj.name}")
    objdir ("../Build/Intermediates/" .. OutputDir .. "/%{prj.name}")
+   
+   pchheader "pch.h"
+   pchsource "src/pch.cpp"
+	
+   filter "files:../Vendor/GLAD/src/glad.c"
+       flags { "NoPCH" } -- Disable precompiled headers for glad.c
 
    filter "system:windows"
        systemversion "latest"

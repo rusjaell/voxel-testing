@@ -1,7 +1,5 @@
-#ifndef BLOCK_H
-#define BLOCK_H
-
-#include <GLM/glm.hpp>
+#ifndef BLOCK_PROPERTIES_H
+#define BLOCK_PROPERTIES_H
 
 enum BlockTypeEnum : unsigned char
 {
@@ -21,10 +19,10 @@ enum class BlockFace
 	Right
 };
 
-class BlockType 
+class BlockProperties 
 {
 public:
-	BlockType(BlockTypeEnum type, const glm::vec4& color);
+	BlockProperties(BlockTypeEnum type, const glm::vec4& color);
 
 	const BlockTypeEnum type() const;
 	const glm::vec4& color() const;

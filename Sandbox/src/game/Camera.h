@@ -1,10 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <GLFW/glfw3.h>
-
 class Camera
 {
 public:
@@ -18,37 +14,16 @@ public:
     void SetFov(float fov);
     void SetAspectRatio(float aspectRatio);
 
-    glm::mat4 viewMatrix() const {
-        return _viewMatrix;
-    }
+    glm::mat4 viewMatrix() const;
+    glm::mat4 projectionMatrix() const;
 
-    glm::mat4 projectionMatrix() const {
-        return _projectionMatrix;
-    }
+    glm::vec3 GetPosition() const;
+    glm::vec3 GetDirection() const;
 
-    glm::vec3 GetPosition() const {
-        return _pos;
-    }
-
-    glm::vec3 GetDirection() const {
-        return _forward;
-    }
-
-    float fov() const {
-        return _fov;
-    }
-
-    float nearPlane() const {
-        return _nearPlane;
-    }
-
-    float farPlane() const {
-        return _farPlane;
-    }
-
-    float aspectRatio() const {
-        return _aspectRatio;
-    }
+    float fov() const;
+    float nearPlane() const;
+    float farPlane() const;
+    float aspectRatio() const;
 
     void UpdateViewMatrix();
     void UpdateProjectionMatrix();

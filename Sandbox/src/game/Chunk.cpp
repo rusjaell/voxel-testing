@@ -1,8 +1,6 @@
+#include "pch.h"
 #include "Chunk.h"
 #include "World.h"
-#include <chrono>
-#include <GLM/gtc/noise.hpp>
-#include <algorithm>
 
 #include "threading/CommandQueue.h"
 

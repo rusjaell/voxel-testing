@@ -1,8 +1,6 @@
 #ifndef VERTEX_ARRAY
 #define VERTEX_ARRAY
 
-#include "OpenGL.h"
-
 class VertexBuffer;
 class VertexBufferLayout;
 class IndexBuffer;

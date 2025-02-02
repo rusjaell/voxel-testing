@@ -1,14 +1,12 @@
+#include "pch.h"
 #include "ChunkBuilder.h"
-#include <future>
-#include <GLM/gtc/noise.hpp>
-#include <iostream>
 
-BlockType* air = new BlockType(BlockTypeEnum::Air, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
-BlockType* grass = new BlockType(BlockTypeEnum::Grass, glm::vec4(0.5f, 0.8f, 0.3f, 1.0f));
-BlockType* dirt = new BlockType(BlockTypeEnum::Dirt, glm::vec4(0.6f, 0.3f, 0.1f, 1.0f));
-BlockType* stone = new BlockType(BlockTypeEnum::Stone, glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+BlockProperties* air = new BlockProperties(BlockTypeEnum::Air, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+BlockProperties* grass = new BlockProperties(BlockTypeEnum::Grass, glm::vec4(0.5f, 0.8f, 0.3f, 1.0f));
+BlockProperties* dirt = new BlockProperties(BlockTypeEnum::Dirt, glm::vec4(0.6f, 0.3f, 0.1f, 1.0f));
+BlockProperties* stone = new BlockProperties(BlockTypeEnum::Stone, glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
 
-static const BlockType* BlockFromType(BlockTypeEnum blockType)
+static const BlockProperties* BlockPropertiesFromType(BlockTypeEnum blockType)
 {
     switch (blockType) {
     case BlockTypeEnum::Air: return air;
@@ -38,8 +36,6 @@ void ChunkBuilder::PushRebuildChunkMesh(const std::shared_ptr<Chunk>& chunk)
 
 void ChunkBuilder::BuildChunk(const std::shared_ptr<Chunk>& chunk)
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
     const glm::ivec2& pos = chunk->pos();
 
     const float baseFrequency = 0.005f;   // Lower frequency for smoother noise
@@ -105,10 +101,6 @@ void ChunkBuilder::BuildChunk(const std::shared_ptr<Chunk>& chunk)
         }
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration<double, std::milli>(end - start);
-    std::cout << "ChunkBuild took:: " << duration.count() << " ms" << std::endl;
-
     chunk->MakeDirty(true);
     //chunk->MarkNeighboursDirty(); // todo fix its broken? mabye ignore neihgbours
     chunk->SetGenerated(true);
@@ -121,8 +113,6 @@ void ChunkBuilder::BuildChunk(const std::shared_ptr<Chunk>& chunk)
 
 void ChunkBuilder::RebuildMesh(const std::shared_ptr<Chunk>& chunk)
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
     ChunkMesh* mesh = chunk->mesh();
 
     mesh->SetUpdateMesh(false);
@@ -150,7 +140,7 @@ void ChunkBuilder::RebuildMesh(const std::shared_ptr<Chunk>& chunk)
 
     for (int i = 0; i < 16; i++) {
         ChunkSegment* segment = chunk->GetChunkSegment(i);
-        if (segment->isFullyAir()) {
+        if (segment->IsFullyAir()) {
             continue;
         }
 
@@ -163,7 +153,7 @@ void ChunkBuilder::RebuildMesh(const std::shared_ptr<Chunk>& chunk)
                         continue;
                     }
 
-                    const BlockType* blockProperties = BlockFromType(blockType);
+                    const BlockProperties* blockProperties = BlockPropertiesFromType(blockType);
                     if (blockProperties == nullptr) { // Uh-oh, no block properties?
                         continue;
                     }
@@ -187,71 +177,70 @@ void ChunkBuilder::RebuildMesh(const std::shared_ptr<Chunk>& chunk)
                     bool showLeftFace = segment->GetBlockType(x - 1, y, z) == BlockTypeEnum::Air;
                     bool showRightFace = segment->GetBlockType(x + 1, y, z) == BlockTypeEnum::Air;
 
-                    ChunkSegment* neighborSegment = chunk->GetChunkSegment(i + 1);
-                    if (neighborSegment == nullptr || neighborSegment->GetBlockType(x, 0, z) != BlockTypeEnum::Air) {
-                        showTopFace = false;
-                    }
+                    //ChunkSegment* neighborSegment = chunk->GetChunkSegment(i + 1);
+                    //if (neighborSegment == nullptr || neighborSegment->GetBlockType(x, 0, z) != BlockTypeEnum::Air) {
+                    //    showTopFace = false;
+                    //}
 
-                    neighborSegment = chunk->GetChunkSegment(i - 1);
-                    if (neighborSegment == nullptr || neighborSegment->GetBlockType(x, 15, z) != BlockTypeEnum::Air) {
-                        showBottomFace = false;
-                    }
+                    //neighborSegment = chunk->GetChunkSegment(i - 1);
+                    //if (neighborSegment == nullptr || neighborSegment->GetBlockType(x, 15, z) != BlockTypeEnum::Air) {
+                    //    showBottomFace = false;
+                    //}
 
                     // todo figure out how to cull unneeded faces
+                    //if (isLeftEdge)
+                    //{
+                    //    const std::shared_ptr<Chunk>& leftChunk = _world->GetChunk(pos.x - 1, pos.y);
+                    //    if (leftChunk != nullptr) {
 
-                    if (isLeftEdge)
-                    {
-                        const std::shared_ptr<Chunk>& leftChunk = _world->GetChunk(pos.x - 1, pos.y);
-                        if (leftChunk != nullptr) {
+                    //        ChunkSegment* relativeChunkSegment = leftChunk->GetChunkSegment(i);
+                    //        if (relativeChunkSegment == nullptr) {
+                    //            __debugbreak(); // huh how?
+                    //        }
 
-                            ChunkSegment* relativeChunkSegment = leftChunk->GetChunkSegment(i);
-                            if (relativeChunkSegment == nullptr) {
-                                __debugbreak(); // huh how?
-                            }
+                    //        showLeftFace = relativeChunkSegment->GetBlockType(15, y, z) == BlockTypeEnum::Air;
+                    //    }
+                    //}
 
-                            showLeftFace = relativeChunkSegment->GetBlockType(15, y, z) == BlockTypeEnum::Air;
-                        }
-                    }
+                    //if (isRightEdge)
+                    //{
+                    //    const std::shared_ptr<Chunk>& rightChunk = _world->GetChunk(pos.x + 1, pos.y);
+                    //    if (rightChunk != nullptr) {
 
-                    if (isRightEdge)
-                    {
-                        const std::shared_ptr<Chunk>& rightChunk = _world->GetChunk(pos.x + 1, pos.y);
-                        if (rightChunk != nullptr) {
+                    //        ChunkSegment* relativeChunkSegment = rightChunk->GetChunkSegment(i);
+                    //        if (relativeChunkSegment == nullptr) {
+                    //            __debugbreak(); // huh how?
+                    //        }
 
-                            ChunkSegment* relativeChunkSegment = rightChunk->GetChunkSegment(i);
-                            if (relativeChunkSegment == nullptr) {
-                                __debugbreak(); // huh how?
-                            }
+                    //        showRightFace = relativeChunkSegment->GetBlockType(0, y, z) == BlockTypeEnum::Air;
+                    //    }
+                    //}
 
-                            showRightFace = relativeChunkSegment->GetBlockType(0, y, z) == BlockTypeEnum::Air;
-                        }
-                    }
+                    //if (isFrontEdge)
+                    //{
+                    //    const std::shared_ptr<Chunk>& frontChunk = _world->GetChunk(pos.x, pos.y + 1);
+                    //    if (frontChunk != nullptr) {
 
-                    if (isFrontEdge)
-                    {
-                        const std::shared_ptr<Chunk>& frontChunk = _world->GetChunk(pos.x, pos.y + 1);
-                        if (frontChunk != nullptr) {
+                    //        ChunkSegment* relativeChunkSegment = frontChunk->GetChunkSegment(i);
+                    //        if (relativeChunkSegment == nullptr) {
+                    //            __debugbreak(); 
+                    //        }
+                    //        showFrontFace = relativeChunkSegment->GetBlockType(x, y, 0) == BlockTypeEnum::Air;
+                    //    }
+                    //}
 
-                            ChunkSegment* relativeChunkSegment = frontChunk->GetChunkSegment(i);
-                            if (relativeChunkSegment == nullptr) {
-                                __debugbreak(); 
-                            }
-                            showFrontFace = relativeChunkSegment->GetBlockType(x, y, 0) == BlockTypeEnum::Air;
-                        }
-                    }
+                    //if (isBackEdge)
+                    //{
+                    //    const std::shared_ptr<Chunk>& backChunk = _world->GetChunk(pos.x, pos.y - 1);
+                    //    if (backChunk != nullptr) {
 
-                    if (isBackEdge)
-                    {
-                        const std::shared_ptr<Chunk>& backChunk = _world->GetChunk(pos.x, pos.y - 1);
-                        if (backChunk != nullptr) {
-
-                            ChunkSegment* relativeChunkSegment = backChunk->GetChunkSegment(i);
-                            if (relativeChunkSegment == nullptr) {
-                                __debugbreak();
-                            }
-                            showBackFace = relativeChunkSegment->GetBlockType(x, y, 15) == BlockTypeEnum::Air;
-                        }
-                    }
+                    //        ChunkSegment* relativeChunkSegment = backChunk->GetChunkSegment(i);
+                    //        if (relativeChunkSegment == nullptr) {
+                    //            __debugbreak();
+                    //        }
+                    //        showBackFace = relativeChunkSegment->GetBlockType(x, y, 15) == BlockTypeEnum::Air;
+                    //    }
+                    //}
 
                     if (showTopFace) {
                         mesh->AddFace(BlockFace::Top, blockProperties, x, worldY, z);
@@ -281,11 +270,6 @@ void ChunkBuilder::RebuildMesh(const std::shared_ptr<Chunk>& chunk)
         }
     }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration<double, std::milli>(end - start);
-    std::cout << "RebuildMesh took:: " << duration.count() << " ms" << std::endl;
-
-    chunk->MakeDirty(true);
     mesh->SetUpdateMesh(true);
     chunk->SetBuilding(false);
 

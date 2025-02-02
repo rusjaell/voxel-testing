@@ -1,16 +1,11 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/hash.hpp"
-
 #include "Chunk.h"
 #include "Camera.h"
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 #include "threading/ThreadPool.h"
-
-#include <unordered_map>
 
 class ChunkBuilder;
 class World
@@ -41,7 +36,7 @@ private:
 	Shader* _shader;
 	Texture* _texture;
 
-	const int renderDistance = 2;
+	const int renderDistance = 7;
 
 	ChunkBuilder* _chunkBuilder;
 

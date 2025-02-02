@@ -1,10 +1,6 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <GLM/glm.hpp>
-#include <string>
-#include <unordered_map>
-
 class Shader
 {
 public:

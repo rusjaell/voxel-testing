@@ -1,11 +1,5 @@
+#include "pch.h"
 #include "Shader.h"
-
-#include "OpenGL.h"
-
-#include <cassert>
-#include <fstream>
-#include <sstream>
-#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const char* vertex_file_path, const char* fragment_file_path)
 	: _compiled(false), _handle(0)

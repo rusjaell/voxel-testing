@@ -1,8 +1,6 @@
+#include "pch.h"
 #include "World.h"
-#include <random> 
-#include <iostream>
-#include <threading/CommandQueue.h>
-#include <atomic>
+#include "threading/CommandQueue.h"
 #include "ChunkBuilder.h"
 
 World::World()
@@ -184,7 +182,8 @@ void World::LoadChunksAroundPlayer()
 
 void World::UnloadFarChunks()
 {
-    return;
+    // todo figure out crash cause, most likely data race?
+    //return; 
 
     std::unique_lock lock(_chunksMutex);
 

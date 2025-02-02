@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "VertexBuffer.h"
-#include <iostream>
 
 VertexBufferLayout::VertexBufferLayout()
     : _stride(0)

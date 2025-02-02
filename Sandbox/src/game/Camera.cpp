@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Camera.h"
 
 Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane)
@@ -69,6 +70,39 @@ void Camera::SetAspectRatio(float aspectRatio)
     _aspectRatio = aspectRatio;
     UpdateProjectionMatrix();
 }
+
+glm::mat4 Camera::viewMatrix() const {
+    return _viewMatrix;
+}
+
+glm::mat4 Camera::projectionMatrix() const {
+    return _projectionMatrix;
+}
+
+glm::vec3 Camera::GetPosition() const {
+    return _pos;
+}
+
+glm::vec3 Camera::GetDirection() const {
+    return _forward;
+}
+
+float Camera::fov() const {
+    return _fov;
+}
+
+float Camera::nearPlane() const {
+    return _nearPlane;
+}
+
+float Camera::farPlane() const {
+    return _farPlane;
+}
+
+float Camera::aspectRatio() const {
+    return _aspectRatio;
+}
+
 
 void Camera::UpdateViewMatrix()
 {

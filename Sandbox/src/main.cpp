@@ -1,15 +1,11 @@
+#include "pch.h"
 #include "game/Chunk.h"
-
 #include "renderer/VertexArray.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
-#include <renderer/Shader.h>
-
+#include "renderer/Shader.h"
 #include "game/Camera.h"
-
 #include "game/World.h"
-#include <iostream>
-
 #include "threading/CommandQueue.h"
 
 int main()

@@ -1,11 +1,6 @@
 #ifndef CHUNK_BUILDER_H
 #define CHUNK_BUILDER_H
 
-#include <queue>
-#include <GLM/ext/vector_int2.hpp>
-#include <memory>
-#include <unordered_map>
-
 #include "World.h"
 
 class ChunkBuilder 
